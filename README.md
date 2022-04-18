@@ -42,7 +42,36 @@ TDD life cycle: Red → Green → Refactor → Repeat
 
 we can **`override`** the **`setUp()`** and **`tearDown()`** funcs with a class func, **in order to execute them just once, for that reason are class level functions.**
 
-![default functions](https://user-images.githubusercontent.com/42684822/163681421-9c7b367c-c026-4d04-8d7a-ac7ec76db661.png)
+```swift
+class swift_testing_practiceTests: XCTestCase {
+
+    override class func setUp() {
+        // Order of execution: 1
+        super.setUp()
+    }
+    
+    override func setUp() {
+        // Order of execution: 2
+    }
+    
+    func someTest() {
+        // Order of execution: 3
+        // example test
+    }
+    
+    override func tearDown() {
+        // Order of execution: 4
+        // Put teardown code here. This method is called after the invocation of each test method in the class
+    }
+    
+    override class func tearDown() {
+        // Order of execution: 5
+        // It is called after all methods complete.
+        // Perform any overall cleanup here.
+        super.tearDown()
+    }
+}
+```
 
 ### Default order of the Unit Tests
 
@@ -53,29 +82,55 @@ XCode run the tests in **alphabetical order**
 - **must** start with `test`
 - no take arguments values, no return values
 
-**naming pattern**
+**Naming pattern**
 
-`func test<System under test>_<Condition or State change>_<Expected result>() {`
-
-}
+```swift
+func test<System under test>_<Condition or State change>_<Expected result>() { ... }
+```
 
 *example*
-
-`testSignupFormModel_WhenInformationProvided_PasswordShouldMatchRepeatPassword() {`
-
-`}`
-
+```swift
+testSignupFormModel_WhenInformationProvided_PasswordShouldMatchRepeatPassword() { ... }
+```
 ### Arrange Act Assert (AAA Pattern)
 
-- Arrange
-    - Prepare all the needed variables
-- Act
-    - invoke the method that we are testing
-- Assert
+- Arrange: Prepare all the needed variables
+- Act: invoke the method that we are testing
+- Assert: validate
     
     <img width="660" alt="assert" src="https://user-images.githubusercontent.com/42684822/163681435-c2d9d5c2-8026-4028-ab26-b5224b52c05c.png">
 
+### Dependency Injections
 
-### Parallel Distributed Testing
+Inject fake or dummies dependencies in our classes allow us test them in isolation.
 
-(running in different simulators at the same time)
+***Stub***
+ is an object where its functions will always return a set of predefined data
+
+***Mock***
+ is an object that keeps track of which method being called and how many times it was called.
+
+```swift
+class MockEmailServiceHelper: EmailServiceHelper {
+    var sendEmailCalled = false
+    var emailCounter = 0
+    var emailAddress = ""
+
+    func sendEmail(to address: String) {
+        sendEmailCalled = true
+        emailCounter += 1
+        emailAddress = address
+    }
+}
+```
+
+**Dummy**
+are objects that are not being used in a test and only act as a placeholder. It usually does not contain any implementation.
+
+```swift
+class DummyDatabaseReader: DatabaseReader {
+    func getAllStock() -> Result<[Television], Error> {
+        return .success([])
+    }
+}
+```
