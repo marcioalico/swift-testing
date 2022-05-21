@@ -134,3 +134,31 @@ class DummyDatabaseReader: DatabaseReader {
     }
 }
 ```
+
+### UI Testing
+
+UI Testing has no direct access to internal functions. They allow us to intetact with UI elements. (black box)
+
+*Example UI Test: Lunch app, navigate to user sign up screen, tap text field, type text, tap button. Assert that a spinner is showing and sign up button turn into disabled.*
+```swift
+let app = XCUIApplication()
+app.launch()
+
+let username = app.textFields["userNameTextField"] // Acessibility identifier or placeholder
+XCTAssertTrue(username.isEnabled)
+
+let loginButton = app.buttons["loginButton"]
+XCTAssertTrue(loginButton.isEnabled)
+
+loginButton.tap()
+
+// XCUIElementQuery is used to locate XCUIElement
+// When we send events to the elements they allocate 
+
+// Advance ElementQueries
+to check direct subviews:
+XCUIApplication().scrollViews["thumbnails"].children(matching: .image)
+
+to check subviews and sub-subviews:
+XCUIApplication().scrollViews["thumbnails"].descendants(matching: .image)
+```
