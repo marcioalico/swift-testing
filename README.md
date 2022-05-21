@@ -1,5 +1,11 @@
 # Unit testing Swift mobile App ([from Udemy course](https://www.udemy.com/course/unit-testing-ios-mobile-app/))
 
+Some of the topics I saw in this course:
+- Basics of testing
+- Unit and UI testing
+- Test Driven Development
+- Mock Dependencies
+
 **Testing pyramid**
 
 1. **Unit tests**: Testing isolated small pieces of code with Mock dependencies.
