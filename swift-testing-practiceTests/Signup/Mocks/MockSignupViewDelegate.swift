@@ -10,6 +10,8 @@ import XCTest
 
 class MockSignupViewDelegate: SignupViewDelegateProtocol {
     
+    var presenter: SignupPresenterProtocol?
+    
     var expectation: XCTestExpectation?
     var signupError: SignupError?
     

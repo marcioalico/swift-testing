@@ -7,13 +7,20 @@
 
 import Foundation
 
-class SignupPresenter {
+protocol SignupPresenterProtocol: AnyObject {
+    init(formModelValidator: SignupModelValidatorProtocol,
+         webService: SignupWebServiceProtocol,
+         viewDelegate: SignupViewDelegateProtocol)
+    func proccessUserSignUp(_ formModel: SignupFormModel)
+}
+
+class SignupPresenter: SignupPresenterProtocol {
     
     private var formModelValidator: SignupModelValidatorProtocol
     private var webService: SignupWebServiceProtocol
     private weak var viewDelegate: SignupViewDelegateProtocol?
     
-    init(formModelValidator: SignupModelValidatorProtocol,
+    required init(formModelValidator: SignupModelValidatorProtocol,
          webService: SignupWebServiceProtocol,
          viewDelegate: SignupViewDelegateProtocol) {
         self.formModelValidator = formModelValidator
@@ -24,18 +31,22 @@ class SignupPresenter {
     func proccessUserSignUp(_ formModel: SignupFormModel) {
         
         if !formModelValidator.isFirstNameValid(formModel.firstName) {
+            viewDelegate?.errorHandler(SignupError.invalidFirstName)
             return
         }
         
         if !formModelValidator.isLastNameValid(formModel.lastName) {
+            viewDelegate?.errorHandler(SignupError.invalidLastName)
             return
         }
         
         if !formModelValidator.isPasswordValid(formModel.password) {
+            viewDelegate?.errorHandler(SignupError.invalidPassword)
             return
         }
         
         if !formModelValidator.isEmailValid(formModel.email) {
+            viewDelegate?.errorHandler(SignupError.invalidEmail)
             return
         }
         
